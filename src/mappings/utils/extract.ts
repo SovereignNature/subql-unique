@@ -58,6 +58,31 @@ export const getBasicData = (extrinsic: SubstrateExtrinsic): BasicExtrinsicData 
   }
 }
 
+export const parseAttr = (extrinsic: SubstrateExtrinsic) => {
+
+      const { meta, method: { args, method, section } } = extrinsic.extrinsic;
+
+      let attributes = [];
+      for (const [k, v] of Object.entries(args)) {
+        let key = meta.fields[k].name;
+        //let value = v.toHuman()?.toString();
+
+        let value = undefined;
+        if(meta.fields[k].type == 148) {
+            let asciiKeys = v.toString().slice(1, -1).split(",").map( x => Number(x) );
+            // logger.info(`[asciiKeys] ${asciiKeys}`);
+            value = String.fromCharCode.apply(null, asciiKeys); // to ascii string
+            // logger.info(`[value] ${value}`);
+        } else {
+            value = v.toHuman()?.toString();
+        }
+
+        attributes.push({key, value});
+      }
+
+     return attributes;
+}
+
 export const processCollection = (extrinsic: SubstrateExtrinsic): Collection => {
   // if (!isCreateCollection(extrinsic.extrinsic.method as TCall)) {
   //   logger.error(`[COLLECTION] ${extrinsic.extrinsic.method.toString()} is not a create collection`);

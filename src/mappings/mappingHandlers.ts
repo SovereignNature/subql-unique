@@ -6,6 +6,7 @@ import {
 import { CollectionEntity, NFTEntity } from "../types";
 import {
   processCollection,
+  parseAttr,
   log,
   getEventArgs,
   getSigner,
@@ -35,6 +36,12 @@ export async function handleCreateCollection(
   final.admin = admin;
   final.blockNumber = BigInt(collection.blockNumber);
   final.createdAt = collection.timestamp;
+
+  let attrs = parseAttr(event.extrinsic);
+  attrs.forEach(e => {
+    final.attributes.push(e);
+  });
+  // logger.info(`[attrs] ${JSON.stringify(final.attributes)}`);
 
   logger.info(`SAVED in ${collection.blockNumber} [COLLECTION] ${final.id}`);
   await final.save();
@@ -378,13 +385,13 @@ export async function handleTokenApproval(
 
 // Master should handle edge cases like:
 export async function handleEvent(event: SubstrateEvent): Promise<void> {
-  logger.info(`Handling Event`);
+  //logger.info(`Handling Event`);
   const [id] = getEventArgs(event, [0]);
-  log("MASTER", {
+  /*log("MASTER", {
     id,
     method: event.event.method,
     section: event.event.section,
-  });
+  });*/
 
   switch (event.event.method) {
     case "CollectionCreated":
@@ -430,8 +437,8 @@ export async function handleEvent(event: SubstrateEvent): Promise<void> {
     case "Redeposited":
       logger.info(`SKIPPING EVENT: ${event.event.method}`);
       break;
-    default:
+    /*default:
       logger.warn(`Unknown event ${event.event.method}`);
-      break;
+      break;*/
   }
 }
