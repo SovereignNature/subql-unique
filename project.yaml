@@ -1,0 +1,27 @@
+specVersion: 1.0.0
+name: subql-starter
+version: 1.0.0
+runner:
+  node:
+    name: "@subql/node"
+    version: ">=1.0.0"
+  query:
+    name: "@subql/query"
+    version: "*"
+description: >-
+  This project can be use as a starting point for developing your SubQuery
+  project
+repository: https://github.com/subquery/subql-starter
+schema:
+  file: ./schema.graphql
+network:
+  chainId: "0xcd4d732201ebe5d6b014edda071c4203e16867305332301dc8d092044b28e554"
+  endpoint: wss://quartz.unique.network
+dataSources:
+  - kind: substrate/Runtime
+    startBlock: 80578
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleEvent
+          kind: substrate/EventHandler

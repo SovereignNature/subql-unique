@@ -1,0 +1,44 @@
+type CollectionEntity @entity {
+  id: ID!
+  issuer: String!
+  admin: String
+  freezer: String!
+  currentOwner: String!
+  metadata: String
+  nfts: [NFTEntity] @derivedFrom(field: "collection")
+  blockNumber: BigInt @index
+  burned: Boolean!
+  frozen: Boolean!
+  attributes: [Attribute]!
+  metadataFrozen: Boolean
+  createdAt: Date!
+}
+
+type NFTEntity @entity {
+  id: ID!
+  issuer: String!
+  currentOwner: String!
+  delegate: String
+  metadata: String
+  burned: Boolean!
+  frozen: Boolean!
+  collection: CollectionEntity!
+  blockNumber: BigInt @index
+  events: [Event]
+  attributes: [Attribute]!
+  metadataFrozen: Boolean
+  createdAt: Date!
+}
+
+type Attribute @jsonField {
+  key: String!
+  value: String!
+}
+
+type Event @jsonField {
+  blockNumber: String
+  timestamp: Date
+  caller: String!
+  interaction: String
+  meta: String!
+}
