@@ -21,6 +21,21 @@ import {
 } from "./utils/getter";
 import { createTokenId, exists, isEmpty, matchEvent } from "./utils/helpers";
 
+import { Sdk } from "@unique-nft/sdk";
+
+export async function createSdk(): Promise<Sdk> {
+  const options = {
+    chainWsUrl: "wss://quartz.unique.network",
+    ipfsGatewayUrl: "https://ipfs.unique.network/ipfs/",
+  };
+  const signerOptions = {
+    seed: "//Alice", // Signer seed phrase
+  };
+  return await Sdk.create({
+    ...options,
+  });
+}
+
 export async function handleCreateCollection(
   event: SubstrateEvent
 ): Promise<void> {
@@ -38,7 +53,7 @@ export async function handleCreateCollection(
   final.createdAt = collection.timestamp;
 
   let attrs = parseAttr(event.extrinsic);
-  attrs.forEach(e => {
+  attrs.forEach((e) => {
     final.attributes.push(e);
   });
   // logger.info(`[attrs] ${JSON.stringify(final.attributes)}`);
