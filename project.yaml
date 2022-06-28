@@ -16,7 +16,7 @@ schema:
   file: ./schema.graphql
 network:
   chainId: "0xcd4d732201ebe5d6b014edda071c4203e16867305332301dc8d092044b28e554"
-  endpoint: wss://quartz.unique.network
+  endpoint: wss://ws-quartz.unique.network
 dataSources:
   - kind: substrate/Runtime
     startBlock: 80578
