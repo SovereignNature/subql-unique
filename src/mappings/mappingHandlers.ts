@@ -24,21 +24,18 @@ import { createTokenId, exists, isEmpty, matchEvent } from "./utils/helpers";
 import { Sdk } from "@unique-nft/sdk";
 import "@unique-nft/sdk/tokens"; //Interface extension for UNIQUE SDK
 
-async function createSdk(): Promise<Sdk> {
-  const options = {
-    chainWsUrl: "wss://quartz.unique.network",
-    ipfsGatewayUrl: "https://ipfs.unique.network/ipfs/",
-  };
-  const signerOptions = {
-    seed: "//Alice", // Signer seed phrase
-  };
-  return await Sdk.create({
-    ...options,
-  });
-}
+// async function createSdk(): Promise<Sdk> {
+//   const options = {
+//     chainWsUrl: "wss://quartz.unique.network",
+//     ipfsGatewayUrl: "https://ipfs.unique.network/ipfs/",
+//   };
+//   return await Sdk.create({
+//     ...options,
+//   });
+// }
 
-let SDK: Sdk;
-createSdk().then((sdk) => (SDK = sdk)); //TODO: Proper init
+// let SDK: Sdk;
+// createSdk().then((sdk) => (SDK = sdk)); //TODO: Proper init
 
 export async function handleCreateCollection(
   event: SubstrateEvent
@@ -56,13 +53,13 @@ export async function handleCreateCollection(
   final.blockNumber = BigInt(collection.blockNumber);
   final.createdAt = collection.timestamp;
 
-  const info = await SDK.collections.get({ collectionId: Number(id) });
-  logger.info(`Collection info: ${info}`);
+  // const info = await SDK.collections.get({ collectionId: Number(id) });
+  // logger.info(`Collection info: ${info}`);
 
-  let attrs = parseAttr(event.extrinsic);
-  attrs.forEach((e) => {
-    final.attributes.push(e);
-  });
+  // let attrs = parseAttr(event.extrinsic);
+  // attrs.forEach((e) => {
+  //   final.attributes.push(e);
+  // });
   // logger.info(`[attrs] ${JSON.stringify(final.attributes)}`);
 
   logger.info(`SAVED in ${collection.blockNumber} [COLLECTION] ${final.id}`);
